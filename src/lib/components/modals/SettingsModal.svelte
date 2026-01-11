@@ -6,9 +6,10 @@
 	interface Props {
 		open: boolean;
 		onClose: () => void;
+		onReconfigure?: () => void;
 	}
 
-	let { open = false, onClose }: Props = $props();
+	let { open = false, onClose, onReconfigure }: Props = $props();
 
 	function handleTogglePanel(panelId: PanelId) {
 		settings.togglePanel(panelId);
@@ -61,7 +62,13 @@
 		</section>
 
 		<section class="settings-section">
-			<h3 class="section-title">Reset</h3>
+			<h3 class="section-title">Dashboard</h3>
+			{#if onReconfigure}
+				<button class="reconfigure-btn" onclick={onReconfigure}>
+					Reconfigure Dashboard
+				</button>
+				<p class="btn-hint">Choose a preset profile for your panels</p>
+			{/if}
 			<button class="reset-btn" onclick={handleResetPanels}> Reset All Settings </button>
 		</section>
 	</div>
@@ -155,6 +162,28 @@
 		background: rgba(255, 255, 255, 0.05);
 		padding: 0.1rem 0.25rem;
 		border-radius: 2px;
+	}
+
+	.reconfigure-btn {
+		padding: 0.5rem 1rem;
+		background: rgba(0, 255, 136, 0.1);
+		border: 1px solid rgba(0, 255, 136, 0.3);
+		border-radius: 4px;
+		color: var(--accent);
+		font-size: 0.7rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+		margin-bottom: 0.25rem;
+	}
+
+	.reconfigure-btn:hover {
+		background: rgba(0, 255, 136, 0.2);
+	}
+
+	.btn-hint {
+		font-size: 0.6rem;
+		color: var(--text-muted);
+		margin: 0 0 0.75rem;
 	}
 
 	.reset-btn {

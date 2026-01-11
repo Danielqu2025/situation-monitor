@@ -69,3 +69,12 @@ export {
 	type MilitaryBase,
 	type Ocean
 } from './map';
+
+// Preset configuration
+export {
+	PRESETS,
+	PRESET_ORDER,
+	ONBOARDING_STORAGE_KEY,
+	PRESET_STORAGE_KEY,
+	type Preset
+} from './presets';
