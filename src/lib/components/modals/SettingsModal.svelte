@@ -1,7 +1,10 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
-	import { settings } from '$lib/stores';
+	import FeedSourceManager from './FeedSourceManager.svelte';
+	import TranslationSettings from '../settings/TranslationSettings.svelte';
+	import { settings, t } from '$lib/stores';
 	import { PANELS, type PanelId } from '$lib/config';
+	import { getPanelName } from '$lib/config/i18n';
 
 	interface Props {
 		open: boolean;
@@ -20,11 +23,11 @@
 	}
 </script>
 
-<Modal {open} title="Settings" {onClose}>
+<Modal {open} title={$t.settingsTitle} {onClose}>
 	<div class="settings-sections">
 		<section class="settings-section">
-			<h3 class="section-title">Enabled Panels</h3>
-			<p class="section-desc">Toggle panels on/off to customize your dashboard</p>
+			<h3 class="section-title">{$t.enabledPanels}</h3>
+			<p class="section-desc">{$t.panelsDescription}</p>
 
 			<div class="panels-grid">
 				{#each Object.entries(PANELS) as [id, config]}
@@ -36,20 +39,31 @@
 							checked={isEnabled}
 							onchange={() => handleTogglePanel(panelId)}
 						/>
-						<span class="panel-name">{config.name}</span>
-						<span class="panel-priority">P{config.priority}</span>
+						<span class="panel-name">{getPanelName(panelId)}</span>
+						<span class="panel-priority">{$t.priority}{config.priority}</span>
 					</label>
 				{/each}
 			</div>
 		</section>
 
 		<section class="settings-section">
-			<h3 class="section-title">Dashboard</h3>
+			<h3 class="section-title">{$t.feedSources}</h3>
+			<p class="section-desc">{$t.feedSourcesDescription}</p>
+			<FeedSourceManager />
+		</section>
+
+		<section class="settings-section">
+			<h3 class="section-title">{$t.translation}</h3>
+			<TranslationSettings />
+		</section>
+
+		<section class="settings-section">
+			<h3 class="section-title">{$t.dashboard}</h3>
 			{#if onReconfigure}
-				<button class="reconfigure-btn" onclick={onReconfigure}> Reconfigure Dashboard </button>
-				<p class="btn-hint">Choose a preset profile for your panels</p>
+				<button class="reconfigure-btn" onclick={onReconfigure}>{$t.reconfigureDashboard}</button>
+				<p class="btn-hint">{$t.reconfigureHint}</p>
 			{/if}
-			<button class="reset-btn" onclick={handleResetPanels}> Reset All Settings </button>
+			<button class="reset-btn" onclick={handleResetPanels}>{$t.resetAllSettings}</button>
 		</section>
 	</div>
 </Modal>

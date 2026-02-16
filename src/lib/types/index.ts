@@ -6,6 +6,15 @@
 export type NewsCategory = 'politics' | 'tech' | 'finance' | 'gov' | 'ai' | 'intel';
 
 /**
+ * Translation data for a news item
+ */
+export interface NewsItemTranslation {
+	zh?: string;
+	en?: string;
+	cachedAt?: number;
+}
+
+/**
  * A news item from any source (RSS, GDELT, etc.)
  */
 export interface NewsItem {
@@ -22,6 +31,7 @@ export interface NewsItem {
 	alertKeyword?: string;
 	region?: string;
 	topics?: string[];
+	translations?: NewsItemTranslation;
 }
 
 /**

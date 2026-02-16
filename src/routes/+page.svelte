@@ -31,7 +31,8 @@
 		refresh,
 		allNewsItems,
 		fedIndicators,
-		fedNews
+		fedNews,
+		language
 	} from '$lib/stores';
 	import {
 		fetchAllNews,
@@ -184,12 +185,30 @@
 		onboardingOpen = true;
 	}
 
+	// Watch for language changes and refresh data
+	$effect(() => {
+		const currentLang = $language;
+		// Only refresh if initialized and language actually changed from previous
+		if ($refresh.initialized && refresh.languageNeedsRefresh()) {
+			// Update refresh store's tracked language
+			refresh.setLanguage(currentLang);
+			// Clear existing news data to show we're switching sources
+			news.clearAll();
+			// Trigger a refresh with new language data
+			handleRefresh();
+		}
+	});
+
 	// Initial load
 	onMount(() => {
 		// Check if first visit
 		if (!settings.isOnboardingComplete()) {
 			onboardingOpen = true;
 		}
+
+		// Initialize refresh store with current language
+		refresh.setLanguage($language);
+		refresh.init();
 
 		// Load initial data and track as refresh
 		async function initialLoad() {
@@ -236,31 +255,31 @@
 			<!-- News Panels -->
 			{#if isPanelVisible('politics')}
 				<div class="panel-slot">
-					<NewsPanel category="politics" panelId="politics" title="Politics" />
+					<NewsPanel category="politics" panelId="politics" />
 				</div>
 			{/if}
 
 			{#if isPanelVisible('tech')}
 				<div class="panel-slot">
-					<NewsPanel category="tech" panelId="tech" title="Tech" />
+					<NewsPanel category="tech" panelId="tech" />
 				</div>
 			{/if}
 
 			{#if isPanelVisible('finance')}
 				<div class="panel-slot">
-					<NewsPanel category="finance" panelId="finance" title="Finance" />
+					<NewsPanel category="finance" panelId="finance" />
 				</div>
 			{/if}
 
 			{#if isPanelVisible('gov')}
 				<div class="panel-slot">
-					<NewsPanel category="gov" panelId="gov" title="Government" />
+					<NewsPanel category="gov" panelId="gov" />
 				</div>
 			{/if}
 
 			{#if isPanelVisible('ai')}
 				<div class="panel-slot">
-					<NewsPanel category="ai" panelId="ai" title="AI" />
+					<NewsPanel category="ai" panelId="ai" />
 				</div>
 			{/if}
 

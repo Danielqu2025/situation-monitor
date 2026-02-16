@@ -77,3 +77,10 @@ export {
 	type FedIndicatorsState,
 	type FedNewsState
 } from './fed';
+
+// Language store
+export { language, languageDisplayName, t } from './language';
+export { getPanelName, getPresetName, getPresetDescription } from '$lib/config/i18n';
+
+// Feed sources store
+export { feedSources, type FeedSourceState } from './feedSources';

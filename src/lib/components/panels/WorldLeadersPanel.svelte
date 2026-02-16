@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Panel } from '$lib/components/common';
+	import { t } from '$lib/stores';
+	import { getPanelName } from '$lib/config/i18n';
 	import type { WorldLeader } from '$lib/types';
 
 	interface Props {
@@ -19,9 +21,9 @@
 	}
 </script>
 
-<Panel id="leaders" title="World Leaders" {count} {loading} {error}>
+<Panel id="leaders" title={getPanelName('leaders')} {count} {loading} {error}>
 	{#if leaders.length === 0 && !loading && !error}
-		<div class="empty-state">No leaders data available</div>
+		<div class="empty-state">{$t.noLeadersData}</div>
 	{:else}
 		<div class="leaders-grid">
 			{#each leaders as leader (leader.id)}

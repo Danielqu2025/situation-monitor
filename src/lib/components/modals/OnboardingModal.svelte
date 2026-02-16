@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { PRESETS, PRESET_ORDER } from '$lib/config';
+	import { t } from '$lib/stores';
+	import { getPresetName, getPresetDescription } from '$lib/config/i18n';
 
 	interface Props {
 		open: boolean;
@@ -34,8 +36,8 @@
 				<button class="close-btn" onclick={handleClose} aria-label="Skip onboarding">
 					&times;
 				</button>
-				<h2>Welcome to Situation Monitor</h2>
-				<p class="subtitle">Choose a dashboard configuration to get started</p>
+				<h2>{$t.welcomeTitle}</h2>
+				<p class="subtitle">{$t.welcomeSubtitle}</p>
 			</div>
 
 			<div class="preset-grid">
@@ -43,15 +45,15 @@
 					{@const preset = PRESETS[presetId]}
 					<button class="preset-card" onclick={() => handleSelectPreset(presetId)}>
 						<div class="preset-icon">{preset.icon}</div>
-						<div class="preset-name">{preset.name}</div>
-						<div class="preset-description">{preset.description}</div>
-						<div class="preset-panel-count">{preset.panels.length} panels</div>
+						<div class="preset-name">{getPresetName(presetId)}</div>
+						<div class="preset-description">{getPresetDescription(presetId)}</div>
+						<div class="preset-panel-count">{preset.panels.length} {$t.panelsCount}</div>
 					</button>
 				{/each}
 			</div>
 
 			<div class="modal-footer">
-				<p class="hint">You can change this later in Settings</p>
+				<p class="hint">{$t.changeLaterHint}</p>
 			</div>
 		</div>
 	</div>

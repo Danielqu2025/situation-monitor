@@ -14,7 +14,22 @@ export {
 } from './panels';
 
 // Feed configuration
-export { FEEDS, INTEL_SOURCES, type FeedSource, type IntelSource } from './feeds';
+export {
+	FEEDS,
+	INTEL_SOURCES,
+	EN_RECOMMENDED_FEEDS,
+	ZH_RECOMMENDED_FEEDS,
+	CATEGORY_NAMES,
+	CATEGORY_DESCRIPTIONS,
+	getRecommendedFeeds,
+	getDefaultFeeds,
+	type FeedSource,
+	type IntelSource,
+	type Language
+} from './feeds';
+
+// Backward compatibility - default to English recommended feeds
+export { EN_RECOMMENDED_FEEDS as RECOMMENDED_FEEDS } from './feeds';
 
 // Keyword configuration
 export {
@@ -80,7 +95,15 @@ export {
 } from './presets';
 
 // API configuration
-export { CORS_PROXY_URL, API_DELAYS, CACHE_TTLS, DEBUG, logger, FINNHUB_API_KEY, FINNHUB_BASE_URL } from './api';
+export {
+	CORS_PROXY_URL,
+	API_DELAYS,
+	CACHE_TTLS,
+	DEBUG,
+	logger,
+	FINNHUB_API_KEY,
+	FINNHUB_BASE_URL
+} from './api';
 
 // World leaders configuration
 export { WORLD_LEADERS } from './leaders';

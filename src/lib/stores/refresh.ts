@@ -4,6 +4,8 @@
 
 import { writable, derived, get } from 'svelte/store';
 import { browser } from '$app/environment';
+import { language } from './language';
+import { feedSources } from './feedSources';
 
 // Refresh stages (matches existing 3-stage approach)
 export type RefreshStage = 'critical' | 'secondary' | 'tertiary';
@@ -61,6 +63,9 @@ export interface RefreshState {
 		errors: string[];
 	}>;
 
+	// Language tracking
+	currentLanguage: string;
+
 	initialized: boolean;
 }
 
@@ -68,7 +73,11 @@ const DEFAULT_AUTO_REFRESH_INTERVAL = 60 * 60 * 1000; // 1 hour
 const STORAGE_KEY = 'refreshSettings';
 
 // Load settings from localStorage
-function loadSettings(): { autoRefreshEnabled: boolean; autoRefreshInterval: number; lastRefresh: number | null } {
+function loadSettings(): {
+	autoRefreshEnabled: boolean;
+	autoRefreshInterval: number;
+	lastRefresh: number | null;
+} {
 	if (!browser) {
 		return {
 			autoRefreshEnabled: true,
@@ -130,6 +139,7 @@ function createInitialState(): RefreshState {
 		autoRefreshEnabled: settings.autoRefreshEnabled,
 		autoRefreshInterval: settings.autoRefreshInterval,
 		refreshHistory: [],
+		currentLanguage: 'en',
 		initialized: false
 	};
 }
@@ -348,6 +358,34 @@ function createRefreshStore() {
 			const categoryState = state.categoryStates[category];
 			if (!categoryState?.lastUpdated) return true;
 			return Date.now() - categoryState.lastUpdated > maxAge;
+		},
+
+		/**
+		 * Update current language and switch feed sources
+		 */
+		setLanguage(lang: string) {
+			update((state) => {
+				// Only update if language actually changed
+				if (state.currentLanguage !== lang) {
+					// Update feed sources for the new language
+					feedSources.switchLanguage(lang as 'en' | 'zh');
+
+					return {
+						...state,
+						currentLanguage: lang
+					};
+				}
+				return state;
+			});
+		},
+
+		/**
+		 * Check if language has changed and needs refresh
+		 */
+		languageNeedsRefresh(): boolean {
+			const state = get({ subscribe });
+			const currentLang = get(language);
+			return state.currentLanguage !== currentLang;
 		},
 
 		/**

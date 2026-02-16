@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Panel } from '$lib/components/common';
-	import { crypto } from '$lib/stores';
+	import { crypto, t } from '$lib/stores';
 	import { formatCurrency, formatPercentChange, getChangeClass } from '$lib/utils';
+	import { getPanelName } from '$lib/config/i18n';
 
 	const items = $derived($crypto.items);
 	const loading = $derived($crypto.loading);
@@ -9,9 +10,9 @@
 	const count = $derived(items.length);
 </script>
 
-<Panel id="whales" title="Crypto" {count} {loading} {error}>
+<Panel id="crypto" title={getPanelName('crypto')} {count} {loading} {error}>
 	{#if items.length === 0 && !loading && !error}
-		<div class="empty-state">No crypto data available</div>
+		<div class="empty-state">{$t.noMarketData}</div>
 	{:else}
 		<div class="crypto-list">
 			{#each items as coin (coin.id)}

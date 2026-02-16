@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isRefreshing, lastRefresh } from '$lib/stores';
+	import { isRefreshing, lastRefresh, language, t } from '$lib/stores';
 
 	interface Props {
 		onSettingsClick?: () => void;
@@ -9,20 +9,24 @@
 
 	const lastRefreshText = $derived(
 		$lastRefresh
-			? `Last updated: ${new Date($lastRefresh).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`
-			: 'Never refreshed'
+			? `${$t.lastUpdated}: ${new Date($lastRefresh).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`
+			: $t.neverRefreshed
 	);
+
+	function handleLanguageToggle() {
+		language.toggle();
+	}
 </script>
 
 <header class="header">
 	<div class="header-left">
-		<h1 class="logo">SITUATION MONITOR</h1>
+		<h1 class="logo">{$t.appTitle}</h1>
 	</div>
 
 	<div class="header-center">
 		<div class="refresh-status">
 			{#if $isRefreshing}
-				<span class="status-text loading">Refreshing...</span>
+				<span class="status-text loading">{$t.refreshing}</span>
 			{:else}
 				<span class="status-text">{lastRefreshText}</span>
 			{/if}
@@ -30,9 +34,12 @@
 	</div>
 
 	<div class="header-right">
-		<button class="header-btn settings-btn" onclick={onSettingsClick} title="Settings">
+		<button class="header-btn lang-btn" onclick={handleLanguageToggle} title="Switch Language">
+			<span class="btn-label">{$language === 'en' ? '中文' : 'English'}</span>
+		</button>
+		<button class="header-btn settings-btn" onclick={onSettingsClick} title={$t.settings}>
 			<span class="btn-icon">⚙</span>
-			<span class="btn-label">Settings</span>
+			<span class="btn-label">{$t.settings}</span>
 		</button>
 	</div>
 </header>
@@ -107,17 +114,19 @@
 		gap: 0.3rem;
 		min-height: 2.75rem;
 		padding: 0.4rem 0.75rem;
-		background: transparent;
+		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: 4px;
 		color: var(--text-secondary);
 		cursor: pointer;
 		transition: all 0.15s ease;
 		font-size: 0.65rem;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 	}
 
 	.header-btn:hover {
-		background: var(--border);
+		background: var(--surface-hover);
+		border-color: var(--border-light);
 		color: var(--text-primary);
 	}
 

@@ -48,3 +48,22 @@ export {
 	type ServiceClientOptions,
 	type HealthStatus
 } from './client';
+
+// Translation Service
+export {
+	translate,
+	translateBatch,
+	translateWithOllama,
+	translateWithLibreTranslate,
+	checkOllamaStatus,
+	loadTranslationConfig,
+	saveTranslationConfig,
+	getCachedTranslation,
+	cacheTranslation,
+	loadTranslationCache,
+	saveTranslationCache,
+	type TranslationConfig,
+	type TranslationProvider,
+	type TranslationCache,
+	DEFAULT_CONFIG as TRANSLATION_DEFAULTS
+} from './translation';

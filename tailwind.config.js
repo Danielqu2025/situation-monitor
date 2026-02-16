@@ -4,22 +4,36 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				bg: '#0a0a0a',
-				surface: '#141414',
-				'surface-hover': '#1a1a1a',
-				border: '#2a2a2a',
-				'border-light': '#3a3a3a',
-				'text-primary': '#e8e8e8',
-				'text-dim': '#888888',
-				'text-muted': '#666666',
-				accent: '#ffffff',
-				danger: '#ff4444',
-				success: '#44ff88',
-				warning: '#ffaa00',
-				info: '#4488ff'
+				bg: '#f8f9fa',
+				surface: '#ffffff',
+				'surface-hover': '#f1f3f4',
+				border: '#dadce0',
+				'border-light': '#e8eaed',
+				'text-primary': '#000000',
+				'text-secondary': '#1a1a1a',
+				'text-dim': '#2d2d2d',
+				'text-muted': '#4a4a4a',
+				accent: '#1a73e8',
+				danger: '#d93025',
+				success: '#188038',
+				warning: '#f9ab00',
+				info: '#1a73e8'
 			},
 			fontFamily: {
-				mono: ['SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'monospace']
+				sans: [
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'"Segoe UI"',
+					'Roboto',
+					'Oxygen',
+					'Ubuntu',
+					'Cantarell',
+					'"Fira Sans"',
+					'"Droid Sans"',
+					'"Helvetica Neue"',
+					'Arial',
+					'sans-serif'
+				]
 			},
 			fontSize: {
 				'2xs': '0.65rem'

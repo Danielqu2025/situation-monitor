@@ -124,7 +124,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--text-secondary);
+		color: var(--text-primary);
 		margin: 0;
 	}
 
@@ -146,18 +146,18 @@
 	}
 
 	.panel-status.monitoring {
-		color: var(--text-secondary);
-		background: rgba(255, 255, 255, 0.05);
+		color: var(--text-primary);
+		background: rgba(0, 0, 0, 0.08);
 	}
 
 	.panel-status.elevated {
-		color: #ffa500;
-		background: rgba(255, 165, 0, 0.15);
+		color: #9a3412;
+		background: rgba(234, 88, 12, 0.2);
 	}
 
 	.panel-status.critical {
-		color: #ff4444;
-		background: rgba(255, 68, 68, 0.15);
+		color: #991b1b;
+		background: rgba(220, 38, 38, 0.2);
 	}
 
 	.panel-loading {

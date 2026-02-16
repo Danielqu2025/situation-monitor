@@ -15,6 +15,8 @@
 	} from '$lib/config/map';
 	import { CACHE_TTLS } from '$lib/config/api';
 	import type { CustomMonitor } from '$lib/types';
+	import { t } from '$lib/stores';
+	import { getPanelName } from '$lib/config/i18n';
 
 	interface Props {
 		monitors?: CustomMonitor[];
@@ -275,10 +277,10 @@
 				.attr('class', 'country')
 				.attr('d', path as unknown as string)
 				.attr('fill', (d: GeoJSON.Feature) =>
-					SANCTIONED_COUNTRY_IDS.includes(+(d.id || 0)) ? '#2a1a1a' : '#0f3028'
+					SANCTIONED_COUNTRY_IDS.includes(+(d.id || 0)) ? '#f5e6e6' : '#e8f4f0'
 				)
 				.attr('stroke', (d: GeoJSON.Feature) =>
-					SANCTIONED_COUNTRY_IDS.includes(+(d.id || 0)) ? '#4a2020' : '#1a5040'
+					SANCTIONED_COUNTRY_IDS.includes(+(d.id || 0)) ? '#e8d0d0' : '#d0e8e0'
 				)
 				.attr('stroke-width', 0.5);
 
@@ -289,7 +291,7 @@
 				.datum(graticule)
 				.attr('d', path as unknown as string)
 				.attr('fill', 'none')
-				.attr('stroke', '#1a3830')
+				.attr('stroke', '#d0e0d8')
 				.attr('stroke-width', 0.3)
 				.attr('stroke-dasharray', '2,2');
 
@@ -301,9 +303,9 @@
 						.append('text')
 						.attr('x', x)
 						.attr('y', y)
-						.attr('fill', '#1a4a40')
+						.attr('fill', '#a0c0b8')
 						.attr('font-size', '10px')
-						.attr('font-family', 'monospace')
+						.attr('font-family', 'sans-serif')
 						.attr('text-anchor', 'middle')
 						.attr('opacity', 0.6)
 						.text(o.name);
@@ -316,7 +318,7 @@
 				.append('path')
 				.datum({ type: 'Polygon', coordinates: [terminatorPoints] } as GeoJSON.Polygon)
 				.attr('d', path as unknown as string)
-				.attr('fill', 'rgba(0,0,0,0.3)')
+				.attr('fill', 'rgba(0,0,0,0.15)')
 				.attr('stroke', 'none');
 
 			// Draw conflict zones
@@ -351,7 +353,7 @@
 						.attr('y', y + 3)
 						.attr('fill', '#00aaff')
 						.attr('font-size', '7px')
-						.attr('font-family', 'monospace')
+						.attr('font-family', 'sans-serif')
 						.text(cp.name);
 					mapGroup
 						.append('circle')
@@ -465,7 +467,7 @@
 						.attr('y', y + 3)
 						.attr('fill', color)
 						.attr('font-size', '8px')
-						.attr('font-family', 'monospace')
+						.attr('font-family', 'sans-serif')
 						.text(h.name);
 					// Hit area
 					mapGroup
@@ -521,7 +523,7 @@
 						.attr('y', y + 3)
 						.attr('fill', color)
 						.attr('font-size', '8px')
-						.attr('font-family', 'monospace')
+						.attr('font-family', 'sans-serif')
 						.text(m.name);
 					mapGroup
 						.append('circle')
@@ -575,7 +577,7 @@
 	});
 </script>
 
-<Panel id="map" title="Global Situation" {loading} {error}>
+<Panel id="map" title={getPanelName('map')} {loading} {error}>
 	<div class="map-container" bind:this={mapContainer}>
 		<svg class="map-svg"></svg>
 		{#if tooltipVisible && tooltipContent}
@@ -596,13 +598,16 @@
 		</div>
 		<div class="map-legend">
 			<div class="legend-item">
-				<span class="legend-dot high"></span> High
+				<span class="legend-dot high"></span>
+				{$t.mapLegend.high}
 			</div>
 			<div class="legend-item">
-				<span class="legend-dot elevated"></span> Elevated
+				<span class="legend-dot elevated"></span>
+				{$t.mapLegend.elevated}
 			</div>
 			<div class="legend-item">
-				<span class="legend-dot low"></span> Low
+				<span class="legend-dot low"></span>
+				{$t.mapLegend.low}
 			</div>
 		</div>
 	</div>
@@ -613,9 +618,10 @@
 		position: relative;
 		width: 100%;
 		aspect-ratio: 2 / 1;
-		background: #0a0f0d;
+		background: var(--surface);
 		border-radius: 4px;
 		overflow: hidden;
+		border: 1px solid var(--border);
 	}
 
 	.map-svg {
@@ -625,15 +631,16 @@
 
 	.map-tooltip {
 		position: absolute;
-		background: rgba(10, 10, 10, 0.95);
-		border: 1px solid #333;
+		background: rgba(255, 255, 255, 0.98);
+		border: 1px solid var(--border);
 		border-radius: 4px;
 		padding: 0.5rem;
 		font-size: 0.65rem;
-		color: #ddd;
+		color: var(--text-primary);
 		max-width: 250px;
 		pointer-events: none;
 		z-index: 100;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	}
 
 	.tooltip-line {
@@ -655,17 +662,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: rgba(20, 20, 20, 0.9);
-		border: 1px solid #333;
+		background: rgba(255, 255, 255, 0.95);
+		border: 1px solid var(--border);
 		border-radius: 4px;
-		color: #aaa;
+		color: var(--text-secondary);
 		font-size: 1rem;
 		cursor: pointer;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.zoom-btn:hover {
-		background: rgba(40, 40, 40, 0.9);
-		color: #fff;
+		background: var(--surface-hover);
+		color: var(--text-primary);
 	}
 
 	.map-legend {
@@ -675,17 +683,19 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.2rem;
-		background: rgba(10, 10, 10, 0.8);
+		background: rgba(255, 255, 255, 0.95);
 		padding: 0.3rem 0.5rem;
 		border-radius: 4px;
 		font-size: 0.55rem;
+		border: 1px solid var(--border);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.legend-item {
 		display: flex;
 		align-items: center;
 		gap: 0.3rem;
-		color: #888;
+		color: var(--text-secondary);
 	}
 
 	.legend-dot {

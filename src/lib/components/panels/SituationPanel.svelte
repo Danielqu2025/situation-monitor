@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Panel } from '$lib/components/common';
 	import { timeAgo } from '$lib/utils';
+	import { t } from '$lib/stores';
+	import { getPanelName } from '$lib/config/i18n';
 	import type { PanelId } from '$lib/config';
 	import type { NewsItem } from '$lib/types';
 
@@ -21,14 +23,15 @@
 	let { panelId, config, news = [], loading = false, error = null }: Props = $props();
 
 	// Calculate threat level based on news
-	const threatLevel = $derived(calculateThreatLevel(news, config.criticalKeywords));
+	const threatLevel = $derived(calculateThreatLevel(news, config.criticalKeywords, $t));
 
 	function calculateThreatLevel(
 		newsItems: NewsItem[],
-		criticalKeywords: string[] = []
+		criticalKeywords: string[] = [],
+		translations: typeof $t
 	): { level: string; text: string } {
 		if (newsItems.length === 0) {
-			return { level: 'monitoring', text: 'MONITORING' };
+			return { level: 'monitoring', text: translations.situation.monitoring };
 		}
 
 		const now = Date.now();
@@ -42,18 +45,18 @@
 		);
 
 		if (hasCritical || recentNews.length >= 3) {
-			return { level: 'critical', text: 'CRITICAL' };
+			return { level: 'critical', text: translations.situation.critical };
 		}
 		if (recentNews.length >= 1) {
-			return { level: 'elevated', text: 'ELEVATED' };
+			return { level: 'elevated', text: translations.situation.elevated };
 		}
-		return { level: 'monitoring', text: 'MONITORING' };
+		return { level: 'monitoring', text: translations.situation.monitoring };
 	}
 </script>
 
 <Panel
 	id={panelId}
-	title={config.title}
+	title={getPanelName(panelId)}
 	status={threatLevel.text}
 	statusClass={threatLevel.level}
 	{loading}
@@ -61,12 +64,12 @@
 >
 	<div class="situation-content">
 		<div class="situation-header">
-			<div class="situation-title">{config.title}</div>
+			<div class="situation-title">{getPanelName(panelId)}</div>
 			<div class="situation-subtitle">{config.subtitle}</div>
 		</div>
 
 		{#if news.length === 0 && !loading && !error}
-			<div class="empty-state">No recent news</div>
+			<div class="empty-state">{$t.situation.noRecentNews}</div>
 		{:else}
 			<div class="situation-news">
 				{#each news.slice(0, 8) as item (item.id)}

@@ -2,26 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CSS Custom Properties for theming */
+/* CSS Custom Properties for theming - Light Theme */
 :root {
-	--bg: #0a0a0a;
-	--surface: #141414;
-	--surface-hover: #1a1a1a;
-	--border: #2a2a2a;
-	--border-light: #3a3a3a;
-	--text: #e8e8e8;
-	--text-dim: #888;
-	--text-muted: #666;
-	--accent: #fff;
-	--red: #ff4444;
-	--green: #44ff88;
-	--yellow: #ffaa00;
-	--blue: #4488ff;
+	--bg: #f8f9fa;
+	--surface: #ffffff;
+	--surface-hover: #f1f3f4;
+	--border: #dadce0;
+	--border-light: #e8eaed;
+	--text: #000000;
+	--text-primary: #000000;
+	--text-secondary: #1a1a1a;
+	--text-dim: #2d2d2d;
+	--text-muted: #4a4a4a;
+	--accent: #1a73e8;
+	--accent-rgb: 26, 115, 232;
+	--red: #d93025;
+	--green: #188038;
+	--yellow: #f9ab00;
+	--blue: #1a73e8;
 }
 
 /* Base styles */
 html {
-	font-family: 'SF Mono', Monaco, Inconsolata, 'Fira Code', monospace;
+	font-family:
+		-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
+		'Droid Sans', 'Helvetica Neue', Arial, sans-serif;
 	background-color: var(--bg);
 	color: var(--text);
 }

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Panel, Badge } from '$lib/components/common';
 	import { getRelativeTime } from '$lib/utils';
-	import { fedNews, fedIndicators, fedVideos } from '$lib/stores';
+	import { fedNews, fedIndicators, fedVideos, t } from '$lib/stores';
+	import { getPanelName } from '$lib/config/i18n';
 	import { isFredConfigured } from '$lib/api/fred';
 	import type { EconomicIndicator } from '$lib/api/fred';
 
@@ -57,7 +58,7 @@
 	}
 </script>
 
-<Panel id="fed" title="Federal Reserve" count={newsState.items.length} {loading} {error}>
+<Panel id="fed" title={getPanelName('fed')} count={newsState.items.length} {loading} {error}>
 	<!-- Economic Indicators -->
 	{#if hasApiKey && indicatorList.length > 0}
 		<div class="indicators-section">
@@ -115,7 +116,7 @@
 	<!-- News Feed -->
 	<div class="news-section">
 		{#if newsState.items.length === 0 && !loading && !error}
-			<div class="empty-state">No Fed news available</div>
+			<div class="empty-state">{$t.noFedNews}</div>
 		{:else}
 			<div class="fed-news-list">
 				{#each newsState.items as item (item.id)}

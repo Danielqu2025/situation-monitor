@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { Panel, NewsItem } from '$lib/components/common';
+	import { Panel, TranslatedNewsItem } from '$lib/components/common';
 	import type { NewsCategory } from '$lib/types';
 	import type { PanelId } from '$lib/config';
-	import { politicsNews, techNews, financeNews, govNews, aiNews, intelNews } from '$lib/stores';
+	import { politicsNews, techNews, financeNews, govNews, aiNews, intelNews, t } from '$lib/stores';
+	import { getPanelName } from '$lib/config/i18n';
 
 	interface Props {
 		category: NewsCategory;
 		panelId: PanelId;
-		title: string;
+		title?: string;
 	}
 
 	let { category, panelId, title }: Props = $props();
@@ -27,15 +28,18 @@
 	const loading = $derived($categoryStore.loading);
 	const error = $derived($categoryStore.error);
 	const count = $derived(items.length);
+
+	// Use translated panel name if title not provided
+	const panelTitle = $derived(title || getPanelName(panelId));
 </script>
 
-<Panel id={panelId} {title} {count} {loading} {error}>
+<Panel id={panelId} title={panelTitle} {count} {loading} {error}>
 	{#if items.length === 0 && !loading && !error}
-		<div class="empty-state">No news available</div>
+		<div class="empty-state">{$t.noNewsAvailable}</div>
 	{:else}
 		<div class="news-list">
 			{#each items.slice(0, 15) as item (item.id)}
-				<NewsItem {item} />
+				<TranslatedNewsItem {item} />
 			{/each}
 		</div>
 	{/if}
